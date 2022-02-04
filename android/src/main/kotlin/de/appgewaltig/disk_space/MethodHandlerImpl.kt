@@ -15,36 +15,18 @@ class MethodHandlerImpl : MethodChannel.MethodCallHandler {
         }
     }
 
-    private fun getFreeDiskSpace(): Double {
+    private fun getFreeDiskSpace(): Long {
         val stat = StatFs(Environment.getExternalStorageDirectory().path)
-
-        val bytesAvailable: Long
-        bytesAvailable = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2)
-            stat.blockSizeLong * stat.availableBlocksLong
-        else
-            stat.blockSize.toLong() * stat.availableBlocks.toLong()
-        return (bytesAvailable / (1024f * 1024f)).toDouble()
+        return stat.blockSizeLong * stat.availableBlocksLong
     }
 
-    private fun getFreeDiskSpaceForPath(path: String): Double {
+    private fun getFreeDiskSpaceForPath(path: String): Long {
         val stat = StatFs(path)
-    
-        val bytesAvailable: Long
-        bytesAvailable = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2)
-            stat.blockSizeLong * stat.availableBlocksLong
-        else
-            stat.blockSize.toLong() * stat.availableBlocks.toLong()
-        return (bytesAvailable / (1024f * 1024f)).toDouble()
+        return stat.blockSizeLong * stat.availableBlocksLong
     }
 
-    private fun getTotalDiskSpace(): Double {
+    private fun getTotalDiskSpace(): Long {
         val stat = StatFs(Environment.getExternalStorageDirectory().path)
-
-        val bytesAvailable: Long
-        bytesAvailable = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2)
-            stat.blockSizeLong * stat.blockCountLong
-        else
-            stat.blockSize.toLong() * stat.blockCount.toLong()
-        return (bytesAvailable / (1024f * 1024f)).toDouble()
+        return stat.blockSizeLong * stat.blockCountLong
     }
 }
