@@ -11,11 +11,11 @@ public class SwiftDiskSpacePlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     case "getFreeDiskSpace":
-        result(UIDevice.current.freeDiskSpaceInMB)
+        result(UIDevice.current.freeDiskSpaceInBytes)
     case "getTotalDiskSpace":
-        result(UIDevice.current.totalDiskSpaceInMB)
+        result(UIDevice.current.totalDiskSpaceInBytes)
     case "getFreeDiskSpaceForPath":
-        result(UIDevice.current.freeDiskSpaceForPathInMB(path: (call.arguments as? [String: String])!["path"]!))
+        result(UIDevice.current.freeDiskSpaceForPathInBytes(path: (call.arguments as? [String: String])!["path"]!))
     default:
         result(0.0)
     }
@@ -36,12 +36,12 @@ extension UIDevice {
     var usedDiskSpaceInMB:Double {
         return Double(usedDiskSpaceInBytes / (1024 * 1024))
     }
-    
+
     public func freeDiskSpaceForPathInMB(path: String) -> Double {
         return Double(freeDiskSpaceForPathInBytes(path: path) / (1024 * 1024))
     }
-    
-    
+
+
 
     //MARK: Get raw value
     var totalDiskSpaceInBytes:Int64 {
@@ -75,7 +75,7 @@ extension UIDevice {
     var usedDiskSpaceInBytes:Int64 {
        return totalDiskSpaceInBytes - freeDiskSpaceInBytes
     }
-    
+
     public func freeDiskSpaceForPathInBytes(path: String) -> Int64 {
         if #available(iOS 11.0, *) {
             if let space = try? URL(fileURLWithPath: path).resourceValues(forKeys: [URLResourceKey.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage {
@@ -91,7 +91,7 @@ extension UIDevice {
                 return 0
             }
         }
-        
+
     }
 
 }
